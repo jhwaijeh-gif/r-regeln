@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R-regeln · ska AI ta över uppgiften? | @joudgor</title>
+<meta name="description" content="Tre frågor avgör om AI ska ta över en uppgift: är den repetitiv, regelstyrd och rimlig att automatisera. R-regeln, förklarad på svenska, privat eller för företaget.">
+<meta property="og:title" content="R-regeln: ska AI ta över uppgiften?">
+<meta property="og:description" content="Tre frågor avgör om en uppgift ska automatiseras. Repetitiv, regelstyrd, rimlig.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F6F3; --bg-alt:#FBFBFA; --surface:#FFFFFF; --border:#EAEAEA; --border-soft:rgba(0,0,0,0.06);
+    --ink:#1F1D1B; --text:#3D3A36; --muted:#787774; --cta:#141210;
+    --red-bg:#FDEBEC; --red-tx:#9F2F2D;
+    --blue-bg:#E1F3FE; --blue-tx:#1F6C9F;
+    --green-bg:#EDF3EC; --green-tx:#346538;
+    --yellow-bg:#FBF3DB; --yellow-tx:#956400;
+    --cloth-bg:#FBECE1; --cloth-tx:#B4481F;
+    --brand:#1A6BFF; --brand-dk:#1457E0;
+    --logo:'Syne','Manrope',sans-serif;
+    --serif:'Playfair Display',Georgia,serif;
+    --sans:'Manrope','Helvetica Neue',system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono','SF Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;background:var(--bg);}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:400;line-height:1.6;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 32px;}
+  .narrow{max-width:780px;}
+  .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(620px 420px at 78% -6%, rgba(173,140,90,0.05), rgba(173,140,90,0) 70%);}
+  .page{position:relative;z-index:1;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(247,246,243,0.72);
+    backdrop-filter:saturate(150%) blur(12px);border-bottom:1px solid var(--border);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;transition:opacity .2s ease;}
+  .brand:hover{opacity:.65;}
+  .brand .mk{width:26px;height:26px;border-radius:7px;background:#1A6BFF;display:flex;align-items:center;justify-content:center;}
+  .brand .mk span{color:#fff;font-family:var(--logo);font-weight:800;font-size:15px;line-height:1;}
+  .brand b{font-family:var(--logo);font-weight:800;font-size:17px;color:var(--ink);letter-spacing:-0.01em;}
+  nav .handle{font-family:var(--mono);font-weight:500;font-size:12.5px;color:var(--muted);letter-spacing:0.02em;}
+
+  /* HERO */
+  header.hero{padding:96px 0 36px;}
+  .eyebrow{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);}
+  h1{font-family:var(--serif);font-weight:600;color:var(--ink);font-size:clamp(38px,6vw,66px);line-height:1.04;letter-spacing:-0.03em;margin:22px 0 0;}
+  h1 em{font-style:italic;font-weight:500;color:var(--cloth-tx);}
+  .lede{font-size:19px;line-height:1.65;color:var(--text);margin-top:26px;max-width:680px;}
+  .lede b{color:var(--ink);font-weight:600;}
+
+  /* META PILLS */
+  .fmt{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;}
+  .fmt span{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:0.04em;
+    color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:9999px;padding:7px 14px;}
+
+  /* FIGURE / ILLUSTRATION */
+  .fig{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--surface);margin-top:16px;}
+  .fig.illus{background:#FBFBFA;}
+  .fig.illus svg{width:100%;height:auto;display:block;}
+  .fig.illus figcaption{background:var(--surface);border-top:1px solid var(--border);}
+  .fig.illus.hero{border:0;background:transparent;margin-top:30px;}
+  .fig.illus.hero svg{border-radius:14px;}
+
+  /* SECTION SHELL */
+  section{padding:64px 0;}
+  .sec-head{margin-bottom:8px;}
+  h2{font-family:var(--serif);font-weight:600;color:var(--ink);font-size:clamp(27px,3.5vw,38px);line-height:1.1;letter-spacing:-0.02em;}
+  .sec-sub{color:var(--muted);font-size:16px;margin-top:10px;max-width:660px;}
+
+  /* STEPS */
+  .steps{margin-top:20px;}
+  .step{display:grid;grid-template-columns:40px 1fr;gap:18px;padding:30px 0;border-top:1px solid var(--border);}
+  .step:first-child{border-top:0;}
+  .step-n{width:34px;height:34px;border-radius:9999px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:600;font-size:14px;background:var(--cloth-bg);color:var(--cloth-tx);}
+  .step h3{font-family:var(--serif);font-weight:600;font-size:22px;color:var(--ink);letter-spacing:-0.01em;margin-bottom:8px;line-height:1.25;}
+  .step p{font-size:15.5px;color:var(--text);line-height:1.62;}
+  .step p b{color:var(--ink);font-weight:600;}
+  .step p+p{margin-top:10px;}
+  .note{margin-top:16px;font-size:14.5px;color:var(--text);line-height:1.55;background:var(--yellow-bg);
+    border:1px solid rgba(149,100,0,0.14);border-radius:10px;padding:13px 16px;display:flex;gap:11px;}
+  .note .lb{flex:0 0 auto;color:var(--yellow-tx);}
+  .note .lb svg{width:18px;height:18px;display:block;}
+  .note b{color:var(--yellow-tx);font-weight:600;}
+  .note.blue{background:var(--blue-bg);border-color:rgba(31,108,159,0.16);}
+  .note.blue .lb{color:var(--blue-tx);} .note.blue b{color:var(--blue-tx);}
+
+  /* CTA */
+  .cta{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:56px 48px;text-align:center;}
+  .cta h2{font-size:clamp(25px,3.3vw,35px);}
+  .cta p{color:var(--muted);font-size:16px;margin:14px auto 0;max-width:480px;}
+  .btn{display:inline-block;margin-top:28px;background:var(--cta);color:#fff;text-decoration:none;font-family:var(--sans);
+    font-weight:600;font-size:15px;padding:14px 26px;border-radius:6px;transition:background .2s ease,transform .12s ease;}
+  .btn:hover{background:#332e29;}
+  .btn:active{transform:scale(0.98);}
+  .cta-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:14px;}
+  .cta-btns .btn{margin-top:0;}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--bg);}
+  .btn-book{display:inline-flex;align-items:center;gap:9px;background:var(--brand);color:#fff;}
+  .btn-book:hover{background:var(--brand-dk);}
+  .btn-book svg{width:18px;height:18px;}
+  .cta-or{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:0.04em;margin-top:18px;}
+
+  /* FLOATING SIDE CTA */
+  .float-cta{position:fixed;right:22px;bottom:22px;z-index:60;max-width:312px;
+    background:var(--surface);border:1.5px solid var(--brand);
+    border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,0.10);transition:transform .14s ease,box-shadow .2s ease;}
+  .float-cta:hover{box-shadow:0 10px 30px rgba(0,0,0,0.14);transform:translateY(-2px);}
+  .fc-link{display:flex;align-items:center;gap:14px;text-decoration:none;padding:14px 16px;}
+  .fc-text{display:flex;flex-direction:column;line-height:1.3;}
+  .fc-text b{font-size:14px;color:var(--ink);font-weight:700;}
+  .fc-text span{font-size:12.5px;color:var(--muted);margin-top:2px;}
+  .fc-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-weight:600;
+    font-size:11px;color:#fff;background:var(--brand);border-radius:9999px;padding:8px 12px;white-space:nowrap;}
+  .fc-btn svg{width:13px;height:13px;}
+  .fc-close{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;border:1px solid var(--border);
+    background:var(--surface);color:var(--muted);font-size:14px;line-height:1;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.12);}
+  .fc-close:hover{color:var(--ink);}
+  @media(max-width:820px){
+    .float-cta{right:12px;left:12px;bottom:12px;max-width:none;}
+    .fc-link{justify-content:space-between;padding:12px 14px;}
+    .fc-text b{font-size:13.5px;}
+  }
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:34px 0 56px;margin-top:80px;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  footer .h{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--ink);letter-spacing:0.02em;}
+  footer .p{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:0.04em;}
+
+  /* MOTION */
+  .reveal{opacity:0;transform:translateY(12px);}
+  .reveal.in{opacity:1;transform:none;transition:opacity .6s cubic-bezier(0.16,1,0.3,1),transform .6s cubic-bezier(0.16,1,0.3,1);}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
+
+  @media(max-width:820px){
+    .wrap{padding:0 22px;}
+    section{padding:52px 0;}
+    header.hero{padding:64px 0 24px;}
+    .cta{padding:40px 24px;}
+  }
+
+  /* PATTERN-CSS: FEATURE / CLOSING BOX (patterns.md mönster 10) */
+  .feat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:34px;
+    border-top:3px solid var(--cloth-tx);}
+  .feat .ftag{display:inline-block;font-family:var(--mono);font-weight:600;font-size:10.5px;
+    letter-spacing:0.08em;text-transform:uppercase;padding:5px 11px;border-radius:9999px;
+    background:var(--cloth-bg);color:var(--cloth-tx);}
+  .feat h3{font-family:var(--serif);font-weight:600;font-size:25px;color:var(--ink);margin:15px 0 8px;}
+  .feat p{font-size:15.5px;color:var(--text);line-height:1.62;max-width:660px;}
+  .feat p+p{margin-top:12px;}
+  @media(max-width:820px){.feat{padding:26px 22px;}}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="page">
+
+  <nav>
+    <div class="wrap">
+      <a class="brand" href="https://ikapp.ai" target="_blank" rel="noopener">
+        <div class="mk"><span>I</span></div>
+        <b>Ikapp</b>
+      </a>
+      <div class="handle">@joudgor</div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow reveal">R-regeln</div>
+      <h1 class="reveal">Ska AI ta över <em>uppgiften</em>, eller inte?</h1>
+      <p class="lede reveal">AI kan spara tid och pengar. Det svåra är att veta vilka uppgifter du ska lämna över. R-regeln är tre frågor du ställer om varje uppgift du gör, privat eller i företaget. <b>Tre ja betyder automatisera.</b></p>
+      <div class="fmt reveal">
+        <span>Tre frågor</span>
+        <span>Privat eller företag</span>
+        <span>Tar två minuter</span>
+      </div>
+
+      <figure class="fig illus hero reveal">
+        <svg viewBox="0 0 1040 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="En uppgift går genom tre frågor och landar i automatisera eller behåll själv">
+          <title>R-regeln: tre frågor avgör om uppgiften automatiseras</title>
+          <rect x="0" y="0" width="1040" height="420" rx="16" fill="#FBFBFA" stroke="#EAEAEA"/>
+
+          <!-- UPPGIFT -->
+          <rect x="40" y="168" width="132" height="76" rx="13" fill="#FFFFFF" stroke="#E4E1DA"/>
+          <text x="106" y="200" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="600" fill="#787774">EN UPPGIFT</text>
+          <g stroke="#C9C4BC" stroke-width="2.4" stroke-linecap="round">
+            <line x1="72" y1="218" x2="140" y2="218"/><line x1="72" y1="228" x2="124" y2="228"/>
+          </g>
+
+          <!-- arrow 1 -->
+          <path d="M178 206 h26 M198 199 l9 7 l-9 7" fill="none" stroke="#B4481F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- panel R1 -->
+          <rect x="212" y="140" width="150" height="132" rx="14" fill="#FFFFFF" stroke="#E4E1DA"/>
+          <text x="287" y="196" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-style="italic" font-size="44" font-weight="600" fill="#346538">R</text>
+          <text x="287" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="600" fill="#3D3A36">Repetitivt</text>
+          <rect x="276" y="236" width="22" height="22" rx="6" fill="#EDF3EC" stroke="#346538" stroke-width="1.6"/>
+          <path d="M281 247 l4 4 l7 -8" fill="none" stroke="#346538" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- arrow 2 -->
+          <path d="M368 206 h26 M388 199 l9 7 l-9 7" fill="none" stroke="#B4481F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- panel R2 -->
+          <rect x="402" y="140" width="150" height="132" rx="14" fill="#FFFFFF" stroke="#E4E1DA"/>
+          <text x="477" y="196" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-style="italic" font-size="44" font-weight="600" fill="#B4481F">R</text>
+          <text x="477" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="600" fill="#3D3A36">Regelstyrt</text>
+          <rect x="466" y="236" width="22" height="22" rx="6" fill="#FBECE1" stroke="#B4481F" stroke-width="1.6"/>
+          <path d="M471 247 l4 4 l7 -8" fill="none" stroke="#B4481F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- arrow 3 -->
+          <path d="M558 206 h26 M578 199 l9 7 l-9 7" fill="none" stroke="#B4481F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- panel R3 -->
+          <rect x="592" y="140" width="150" height="132" rx="14" fill="#FFFFFF" stroke="#E4E1DA"/>
+          <text x="667" y="196" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-style="italic" font-size="44" font-weight="600" fill="#1F6C9F">R</text>
+          <text x="667" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="600" fill="#3D3A36">Rimligt</text>
+          <rect x="656" y="236" width="22" height="22" rx="6" fill="#E1F3FE" stroke="#1F6C9F" stroke-width="1.6"/>
+          <path d="M661 247 l4 4 l7 -8" fill="none" stroke="#1F6C9F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- arrow 4 -->
+          <path d="M748 206 h30 M772 199 l9 7 l-9 7" fill="none" stroke="#346538" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- automatisera node -->
+          <rect x="786" y="152" width="214" height="108" rx="14" fill="#EDF3EC" stroke="#CBE0CB"/>
+          <circle cx="825" cy="206" r="17" fill="#346538"/>
+          <path d="M817 206 l6 6 l11 -12" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="852" y="201" font-family="'JetBrains Mono',monospace" font-size="14.5" font-weight="600" fill="#346538">Automatisera</text>
+          <text x="852" y="220" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#5f8a63">tre ja</text>
+
+          <!-- nej branch down to behåll själv -->
+          <path d="M477 272 v34 M470 300 l7 8 l7 -8" fill="none" stroke="#B9B4AC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="493" y="294" font-family="'JetBrains Mono',monospace" font-size="10.5" fill="#9b968d">ett nej</text>
+          <rect x="402" y="318" width="150" height="40" rx="12" fill="#F1F0ED" stroke="#E4E1DA"/>
+          <text x="477" y="343" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#787774">Behåll själv</text>
+        </svg>
+      </figure>
+    </div>
+  </header>
+
+  <!-- R-REGELN -->
+  <section class="wrap narrow" style="padding-top:8px;margin:0 auto;">
+    <div class="sec-head reveal">
+      <h2>R-regeln, tre frågor</h2>
+      <div class="sec-sub">Gå igenom dem i ordning för varje uppgift du gör, privat eller i företaget. Tre ja betyder att den ska automatiseras. Ett nej betyder att du behåller den själv tills vidare.</div>
+    </div>
+
+    <div class="steps">
+
+      <div class="step reveal">
+        <div class="step-n">1</div>
+        <div>
+          <h3>Är det repetitivt?</h3>
+          <p>Gör du uppgiften en gång i veckan är den värd att titta på. Gör du den varje dag är det knappt en fråga. Då ska du automatisera den först av allt, innan du lägger tid på något annat.</p>
+          <div class="note blue"><span class="lb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-8-8"/><path d="M20 4v6h-6"/></svg></span><span><b>Mitt exempel:</b> jag skickar guider till mina följare varje dag. Den biten har jag automatiserat bort och sparar ett par timmar om dagen.</span></div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-n">2</div>
+        <div>
+          <h3>Är det regelstyrt?</h3>
+          <p>Samma indata som ger samma resultat är perfekt att lämna över. Kräver uppgiften i stället att du tänker, väljer och använder omdöme blir det svårare, och ofta inte värt att automatisera helt.</p>
+          <div class="note blue"><span class="lb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-8-8"/><path d="M20 4v6h-6"/></svg></span><span><b>Mitt exempel:</b> att skriva videomanus är repetitivt, men det kräver omdöme. Det automatiserar jag inte. AI hjälper till, jag bestämmer.</span></div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-n">3</div>
+        <div>
+          <h3>Är det rimligt?</h3>
+          <p>Räkna hem det. Sparar automationen mer tid än den tar att bygga är den värd det. Annars inte. Det gäller att väga timmarna du lägger på att sätta upp den mot tiden du faktiskt får tillbaka.</p>
+          <div class="note"><span class="lb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span><span><b>Vanligt misstag:</b> att bygga något som tar 20 timmar att sätta upp för att spara 30 minuter i veckan. Räkna först, bygg sen.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BESLUTET -->
+  <section style="padding-top:8px">
+    <div class="wrap narrow" style="margin:0 auto">
+      <div class="feat reveal">
+        <span class="ftag">Så tar du beslutet</span>
+        <h3>Tre ja? Då automatiserar du.</h3>
+        <p>Går uppgiften igenom alla tre frågorna ska den bort från ditt bord och över till AI. Faller den på en enda fråga, behåll den själv så länge. Du behöver inte gissa, du svarar på tre frågor.</p>
+        <p>En sak till: även när du automatiserar en uppgift är det du som äger resultatet. Kolla vad AI gör med stickprov, och mata aldrig in känsliga kund- eller personuppgifter i ett verktyg du inte vet var det sparar dem.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DET ANDRA SÄTTET -->
+  <section style="padding-top:0">
+    <div class="wrap narrow" style="margin:0 auto">
+      <div class="feat reveal">
+        <span class="ftag">Det andra sättet</span>
+        <h3>Eller låt någon göra genomlysningen åt dig</h3>
+        <p>Du kan också låta någon gå igenom ditt företag och dina arbetsflöden och peka ut var AI kan spara dig tid och pengar. Då slipper du leta själv.</p>
+        <p>Det är den sortens hjälp jag erbjuder. Boka ett samtal nedan så tittar vi på dina uppgifter tillsammans.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="kontakt" style="padding-top:8px">
+    <div class="wrap">
+      <div class="cta reveal">
+        <h2>Vill du lära dig AI, eller veta om ditt företag kan använda det?</h2>
+        <p>Jag hjälper dig komma igång, från första frågan till färdig rutin. Hör av dig så tar vi reda på om och var AI passar för dig eller ditt företag.</p>
+        <a class="btn btn-book" href="https://cal.com/jude-hwaijeh-oix30w/strategisamtal" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Boka ett strategisamtal</a>
+        <div class="cta-or">eller hör av dig direkt</div>
+        <div class="cta-btns">
+          <a class="btn btn-ghost" href="mailto:jude@ikapp.ai">Mejla jude@ikapp.ai</a>
+          <a class="btn btn-ghost" href="https://instagram.com/joudgor">Skriv på Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="h">@joudgor</div>
+      <div class="p">powered by Ikapp.ai</div>
+    </div>
+  </footer>
+
+  <div class="float-cta" id="floatCta">
+    <button class="fc-close" type="button" aria-label="Stäng">&times;</button>
+    <a class="fc-link" href="#kontakt">
+      <span class="fc-text">
+        <b>Kan ditt företag använda AI?</b>
+        <span>Eller vill du lära dig själv?</span>
+      </span>
+      <span class="fc-btn">Ta reda på det <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});}
+    else{
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      },{threshold:0, rootMargin:'0px 0px 12% 0px'});
+      els.forEach(function(e){io.observe(e);});
+    }
+
+    var fc=document.getElementById('floatCta');
+    if(fc){ var fcc=fc.querySelector('.fc-close'); if(fcc){ fcc.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); fc.style.display='none'; }); } }
+  })();
+</script>
+</body>
+</html>
